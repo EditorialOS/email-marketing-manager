@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "google-drive": {
+      "type": "http",
+      "url": "https://gdrive.mcp.claude.com/mcp",
+      "category": "docs"
+    }
+  }
+}
