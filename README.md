@@ -1,5 +1,7 @@
 # Email Marketing Manager
 
+**Docs:** [PRD](PRD.md) · [Changelog](CHANGELOG.md)
+
 Draft newsletters from your real documents — brand guide, audience personas, past issues, and performance data. Not a template library — a production system that reads your Google Drive folder, writes client-specific copy with segment variants, predicts performance, and learns from every send.
 
 ## What It Does
