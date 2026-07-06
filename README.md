@@ -64,8 +64,8 @@ Log results and update the learning memory. Every tracked newsletter makes the n
 ## Install
 
 ```
-/plugin marketplace add EditorialOS/email-marketing-manager
-/plugin install email-marketing-manager@email-marketing-manager
+/plugin marketplace add EditorialOS/editorial-os
+/plugin install email-marketing-manager@editorialos
 ```
 
 ## Example Usage
