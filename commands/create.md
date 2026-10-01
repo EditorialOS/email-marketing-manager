@@ -1,9 +1,9 @@
 ---
-description: Draft a complete newsletter from your real documents. Reads your brand guide, audience personas, and past newsletters from Box, selects verified images from Cloudinary, produces subject line, body copy, CTA, image selections, segment-specific variants, and a performance prediction. Posts the draft to Beehiiv.
-argument-hint: "Topic: spring sale" or "Topic: product launch, Segment: past customers"
+description: "Draft a complete newsletter from Box context, verified Cloudinary assets, and performance history; run the editorial gate; and post an approved draft to Beehiiv."
+argument-hint: "Topic: spring sale | Segment: past customers"
 ---
 
-# /create
+# /email-marketing-manager:create
 
 One command. Full newsletter. Built from your documents, not a prompt template.
 
@@ -33,7 +33,7 @@ If ⚪ No client: ask for brand name, audience description, and one example of a
 
 ## Step 2 — Check Newsletter History
 
-Read past newsletters from Box and from `newsletter-log.md` if it exists from prior `/track` runs.
+Read past newsletters from Box and from `newsletter-log.md` if it exists from prior `/email-marketing-manager:track` runs.
 
 - What topics have been covered recently? Avoid repeats within the last 4 issues.
 - What angles have been used? Don't reuse the same hook type back-to-back.
@@ -140,7 +140,7 @@ If performance history exists:
 
 If no history:
 - Use industry benchmarks. State they're benchmarks, not predictions.
-- "After you run `/track` on this newsletter, the next prediction will use real data."
+- "After you run `/email-marketing-manager:track` on this newsletter, the next prediction will use real data."
 
 ---
 
@@ -250,6 +250,6 @@ NEWSLETTER RECORD
 Saved to: [Box folder path]
 Draft posted to: Beehiiv (draft ID: [id]) or "not connected — copy above"
 
-After this newsletter sends, run /track to log results.
+After this newsletter sends, run /email-marketing-manager:track to log results.
 Every tracked newsletter makes the next one smarter.
 ```

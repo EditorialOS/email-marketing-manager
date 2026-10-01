@@ -1,6 +1,6 @@
 ---
 name: performance-learning
-description: Tracks newsletter results, extracts specific learnings, and feeds them back into future newsletters. Every /track makes the next /create smarter. This is the learning loop — the feature that separates this system from prompt templates and SOPs. Pulls metrics from Beehiiv, writes learning files to Box, and tracks Cloudinary image performance.
+description: Tracks newsletter results, extracts specific learnings, and feeds them back into future newsletters. Every /email-marketing-manager:track makes the next /email-marketing-manager:create smarter. This is the learning loop — the feature that separates this system from prompt templates and SOPs. Pulls metrics from Beehiiv, writes learning files to Box, and tracks Cloudinary image performance.
 ---
 
 # Performance Learning — The Feedback Loop
@@ -18,15 +18,15 @@ No other approach does this. Not prompt templates. Not SOPs. Not "upload your br
 ## The Learning Loop
 
 ```
-/create (Newsletter 1) → sends → /track (results logged)
+/email-marketing-manager:create (Newsletter 1) → sends → /email-marketing-manager:track (results logged)
                                          ↓
                                 learnings extracted
                                          ↓
-/create (Newsletter 2) → reads learnings → smarter draft → sends → /track
+/email-marketing-manager:create (Newsletter 2) → reads learnings → smarter draft → sends → /email-marketing-manager:track
                                                                        ↓
                                                               more learnings
                                                                        ↓
-/create (Newsletter 3) → reads deeper history → even smarter → sends → /track
+/email-marketing-manager:create (Newsletter 3) → reads deeper history → even smarter → sends → /email-marketing-manager:track
 ```
 
 Each cycle through the loop adds:
@@ -91,7 +91,7 @@ Good: "Product hero image = +15% click rate vs. text-only newsletters (4 compari
 - Images used (filenames + placement)
 - Whether images were used at all (for image vs. text-only comparison)
 
-### Cumulative (Updated After Each /track)
+### Cumulative (Updated After Each /email-marketing-manager:track)
 
 **Angle effectiveness matrix:**
 
@@ -131,7 +131,7 @@ Good: "Product hero image = +15% click rate vs. text-only newsletters (4 compari
 
 ## Prediction Engine
 
-When /create requests a prediction:
+When /email-marketing-manager:create requests a prediction:
 
 ### Step 1 — Find Similar Newsletters
 Search newsletter history for closest matches on:
@@ -179,11 +179,11 @@ When a newsletter underperforms (>10% below prediction or baseline):
 
 Performance data lives in the client's Box folder as plain markdown. Same folder as the brand docs, fully transparent.
 
-### Files Written by /track
+### Files Written by /email-marketing-manager:track
 
 **newsletter-log.md** — chronological record of every newsletter created and tracked. One entry per newsletter with date, angle, subject, segments, Cloudinary asset IDs, metrics, editorial gate scores, and one-line learning summary.
 
-**newsletter-learnings.md** — cumulative learnings organized by category: angle effectiveness, segment insights, timing patterns, subject line patterns, image impact (with Cloudinary asset IDs), CTA patterns. Updated with each /track run. New learnings append; they never overwrite.
+**newsletter-learnings.md** — cumulative learnings organized by category: angle effectiveness, segment insights, timing patterns, subject line patterns, image impact (with Cloudinary asset IDs), CTA patterns. Updated with each /email-marketing-manager:track run. New learnings append; they never overwrite.
 
 **newsletter-baselines.md** — current state: overall averages, per-segment baselines, angle effectiveness matrix, best send windows, newsletter count, confidence level, last updated date.
 
@@ -209,7 +209,7 @@ Performance data lives in the client's Box folder as plain markdown. Same folder
 
 This skill is designed to work in two modes:
 
-**Plugin mode (Cowork):** User manually runs `/create` and `/track`. Skill reads from and writes to Box. Images from Cloudinary. Metrics from Beehiiv.
+**Plugin mode (Cowork):** User manually runs `/email-marketing-manager:create` and `/email-marketing-manager:track`. Skill reads from and writes to Box. Images from Cloudinary. Metrics from Beehiiv.
 
 Same skill file. Same methodology. Same learning files. Different connector, same output quality.
 
@@ -223,6 +223,6 @@ This is the most defensible feature in the system:
 
 By newsletter 10, the system knows things about the brand's email performance that the brand's own team may not have noticed — because it cross-references every variable systematically, without forgetting, without optimism bias, without getting bored of the data.
 
-That intelligence lives in the client's Drive folder. It's their data, producing their results, getting smarter on their behalf. They can read it, edit it, take it with them.
+That intelligence lives in the client's Box folder. It's their data, producing their results, getting smarter on their behalf. They can read it, edit it, take it with them.
 
 No prompt playbook does this. No SOP does this. No "master prompt" does this. This is the product.

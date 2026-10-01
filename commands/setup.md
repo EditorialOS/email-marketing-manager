@@ -1,8 +1,8 @@
 ---
-description: Connect your Box folder, Cloudinary library, and Beehiiv account so every newsletter reads your real documents and images. Three questions, 60 seconds. Optional — /create also works without it.
+description: "Configure the Box folder, Cloudinary asset scope, and Beehiiv audience context used by the newsletter workflow."
 ---
 
-# /setup
+# /email-marketing-manager:setup
 
 Connect your documents, images, and email platform. Three questions. Every newsletter gets smarter after this.
 
@@ -26,7 +26,7 @@ The folder, tag, or search term that identifies your newsletter-ready images in 
 
 **3. How many audience segments do you actively email in Beehiiv?**
 
-This sizes the segment variants in each `/create` run. If you're not on Beehiiv yet, that's fine — the newsletter output formats for easy paste into any platform.
+This sizes the segment variants in each `/email-marketing-manager:create` run. If you're not on Beehiiv yet, that's fine — the newsletter output formats for easy paste into any platform.
 
 *Example: "3 — newsletter subscribers, past customers, leads" or "1 — everyone gets the same email"*
 
@@ -47,7 +47,7 @@ Your Brand Folder/
 ├── audience-personas.md
 ├── past-newsletters/      ← examples of what you've sent before
 ├── performance/           ← open rates, click rates, any data you have
-├── newsletter-log.md      ← written by /track
+├── newsletter-log.md      ← written by /email-marketing-manager:track
 ├── newsletter-learnings.md
 └── newsletter-baselines.md
 ```
@@ -64,4 +64,4 @@ You don't need all of these. A brand guide in Box and a few images in Cloudinary
 
 ---
 
-*This is optional. `/create` works without setup — you can paste brand context, describe your audience, or provide examples directly. Setup just means you don't have to repeat yourself every session.*
+*This is optional. `/email-marketing-manager:create` works without setup — you can paste brand context, describe your audience, or provide examples directly. Setup just means you don't have to repeat yourself every session.*

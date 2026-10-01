@@ -1,31 +1,31 @@
-# Where Editorial OS Runs
+# Where Email Marketing Manager Runs
 
 Editorial OS is one system with multiple surfaces.
 
-## Claude CoWork
+## Claude
 
-Claude CoWork is the first public install surface.
+The Anthropic plugin is the primary distribution surface. The same package works in Claude chat, Cowork, and Claude Code, subject to the capabilities available on each surface.
 
-This is where specialists show up as command-driven operators with:
+The plugin provides:
 - slash commands,
-- project context,
-- Drive-connected memory,
-- recurring tasks,
-- and approval-gated workflows.
+- Box-connected client context and learning memory,
+- verified Cloudinary asset selection,
+- Beehiiv draft and metrics access,
+- and approval-gated newsletter workflows.
 
-For public positioning, this is the primary surface.
+Commands are namespaced as `/email-marketing-manager:<command>`.
 
 ## GitHub
 
 GitHub is the public source spine.
 
-This is where the structure, docs, commands, examples, and install path live. The repo should explain the system clearly enough that every other artifact can be adapted from it.
+This is where the Anthropic-standard manifest, MCP configuration, commands, skills, documentation, and install path live.
 
 ## Perplexity Computer
 
 Perplexity Computer is the autonomous runtime surface.
 
-This is where the same specialists can run through standing orders, scheduled execution, shared Drive memory, and morning summaries. It is important proof that the architecture can operate beyond a manually triggered plugin surface.
+This is where the same specialist can run through standing orders, scheduled execution, shared Box memory, and summaries. It is an adaptation of the plugin workflow, not the canonical package.
 
 ## Why this structure matters
 

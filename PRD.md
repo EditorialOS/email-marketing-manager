@@ -1,51 +1,58 @@
-# PRD — Email Marketing Manager v1.0
+# PRD — Email Marketing Manager v2.0
 
-  **Status:** Shipped · v1.0.0 · [Changelog](CHANGELOG.md)
-  **Owner:** Roger Gurbani
+**Status:** Shipped · v2.0.1 · [Changelog](CHANGELOG.md)
+**Owner:** Roger Gurbani
 
-  ---
+## Problem
 
-  ## Problem
+Newsletter knowledge rarely compounds. Subject-line patterns, segment response, timing, angles, image performance, and CTA behavior live in an operator's head or in disconnected analytics. Generic drafting tools also invent asset names and reset their context every session.
 
-  Newsletter knowledge doesn't compound. What subject-line patterns open, which CTAs convert per segment, what timing works — this lives in the head of whoever runs the newsletter, and it walks out the door when they do. Most teams never surface it deliberately at all. Each issue starts closer to zero than it should, and AI drafting tools reset to zero every session by design.
+## Users
 
-  ## Users
+- Newsletter operators producing on a weekly or biweekly cadence
+- Marketing teams running segmented sends
+- Agencies that need client knowledge to survive staff changes
 
-  - **Newsletter operators** (solo or small team) producing on a weekly/biweekly cadence
-  - **Marketing teams** running segmented sends who can't afford per-segment copywriting time
-  - **Agencies** producing newsletters for clients where institutional knowledge must survive staff changes
+## What v2 does
 
-  ## What v1 does
+- Reads brand guides, personas, past newsletters, performance history, and learning files from Box.
+- Queries Cloudinary before drafting and constructs a closed candidate list containing verified asset IDs, delivery URLs, dimensions, format, and metadata.
+- Prohibits the draft from citing any image outside the current candidate list.
+- Generates segment variants differentiated by audience needs, not surface-level swaps.
+- Applies the substitution test so generic copy is revised before review.
+- Produces a performance prediction with rationale grounded in the account's baselines.
+- Scores Voice, Angle, Structure, Image Integrity, and Segment Fit from 1–5.
+- Requires 5/5 on every editorial gate before a draft can post to Beehiiv.
+- Posts drafts to Beehiiv but never publishes or sends them.
+- Pulls Beehiiv metrics when connected and accepts manual results otherwise.
+- Writes transparent, editable learning files back to Box so the next draft uses accumulated evidence.
 
-  - Drafts the next issue from real documents: brand guide, personas, past newsletters, performance history — read from a connected Drive folder
-  - Generates **segment variants** differentiated by audience type, not surface swaps
-  - Applies the **substitution test** to body copy: if a paragraph would work for any brand, it gets revised
-  - Produces a **performance prediction with rationale** on every draft, grounded in the account's own baselines
-  - Closes the loop via `/track`: logs actuals, compares to prediction, extracts learnings, and writes them back to Drive (`newsletter-learnings.md`, `newsletter-baselines.md`) — the next `/create` reads them before drafting
-  - Stores all accumulated knowledge as plain markdown any team member can read, audit, and correct
+## Editorial gate outcomes
 
-  ## What v1 explicitly does NOT do
+- **APPROVED:** all five gates score 5/5.
+- **REVISE:** any gate scores 3–4; fix the failing gate and score again.
+- **KILL:** any gate scores 1–2; restart from a different angle.
 
-  - **Does not send.** Drafts are delivered for human approval; the send happens on your email platform. The human gate before send is a feature, not a missing integration.
-  - **Does not pull metrics automatically.** `/track` takes reported results; live platform sync is a connector-level extension, not core.
-  - **Does not disaggregate performance by segment.** v1 tracks issue-level actuals; segment-level disaggregation is scoped for v1.1.
-  - **Does not A/B test.** It generates subject-line options and predicts; running the test is the platform's job.
-  - **Does not fine-tune on your sends.** Learnings are stored as readable, correctable markdown — if the system learns a wrong pattern, you edit the file.
+## What v2 explicitly does not do
 
-  ## Success criteria
+- **Does not send.** Publishing and sending remain human actions in Beehiiv.
+- **Does not invent assets.** If Cloudinary is unavailable or returns no match, the output is text-only.
+- **Does not bypass the editorial gate.** A non-approved draft cannot post to Beehiiv.
+- **Does not promise unavailable segment metrics.** Segment-level learning depends on the data Beehiiv or the user provides.
+- **Does not fine-tune on sends.** Learnings remain readable and correctable Markdown.
 
-  - The learning loop demonstrably changes output: a draft produced after N tracked issues differs from a cold-start draft in ways traceable to lines in `newsletter-learnings.md` <!-- ⚠️ RAJ: run this comparison once on a test brand and describe one concrete example here — this is the whole product thesis in one sentence. -->
-  - Segment variants pass a differentiation check: variants differ in angle and emphasis, not just greeting
-  - Every `/create` includes a prediction with stated rationale referencing prior baselines (or explicitly states no baseline exists yet)
-  - Prediction calibration improves across tracked issues <!-- ⚠️ RAJ: if you have even 3–5 tracked issues on a test account, state prediction vs. actual here. Honest early numbers beat no numbers. -->
+## Success criteria
 
-  ## v1.1 roadmap
+- Every cited image appears in the current Cloudinary candidate list with a verified delivery URL and dimensions.
+- No Beehiiv draft is created until every editorial gate scores 5/5.
+- Segment variants differ in angle and emphasis, not only greeting or vocabulary.
+- Every `/email-marketing-manager:create` includes a prediction with evidence or explicitly states that no baseline exists.
+- A later draft can trace material choices to prior entries in `newsletter-learnings.md` or `newsletter-baselines.md`.
+- The plugin remains usable with any subset of connectors, including fully manual mode.
 
-  - Segment-level performance disaggregation in `/track`
+## Decision log
 
-  ## Decision log
-
-  - **Learning files over fine-tuning** — transparent, correctable, and portable; wrong patterns are a text edit, not a retraining run
-  - **Prediction required on every draft** — a prediction creates accountability; `/track` comparing prediction to actual is what makes learnings specific
-  - **Human gate before send** — the system optimizes the draft, not the decision to publish
-  
+- **Closed-list assets over generated references:** image integrity is deterministic and auditable.
+- **Five hard gates over a checklist:** approval has an unambiguous threshold.
+- **Learning files over fine-tuning:** accumulated knowledge stays transparent and portable.
+- **Draft-only Beehiiv writes:** the system improves the work without taking away the human send decision.

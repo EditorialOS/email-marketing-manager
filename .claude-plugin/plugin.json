@@ -1,5 +1,22 @@
 {
+  "$schema": "https://www.schemastore.org/claude-code-plugin-manifest.json",
   "name": "email-marketing-manager",
-  "version": "2.0.0",
-  "description": "A role-locked newsletter operator for Claude Cowork. Reads client context from Box, selects verified images from Cloudinary, drafts newsletters with segment variants, scores output through a 5-gate editorial review, posts drafts to Beehiiv, tracks outcomes, and writes learning files back so the next issue is smarter than the last. Built from 20 years of editorial operations at WIRED, Amazon, Sunset, and the Los Angeles Times."
+  "displayName": "Email Marketing Manager",
+  "version": "2.0.1",
+  "description": "Newsletter operations for Claude with Box context, verified Cloudinary assets, a five-gate editorial review, Beehiiv drafts and metrics, and a persistent learning loop.",
+  "author": {
+    "name": "Editorial OS",
+    "email": "editorial.operating.system@gmail.com",
+    "url": "https://github.com/EditorialOS"
+  },
+  "homepage": "https://github.com/EditorialOS/email-marketing-manager#readme",
+  "repository": "https://github.com/EditorialOS/email-marketing-manager",
+  "license": "Apache-2.0",
+  "keywords": [
+    "newsletter",
+    "email-marketing",
+    "beehiiv",
+    "box",
+    "cloudinary"
+  ]
 }

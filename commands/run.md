@@ -1,15 +1,15 @@
 ---
-description: Inspect current context — standing orders, topic queue, learning files, and gaps — then decide the next best action for the newsletter workflow. The operator command that makes the specialist feel like a teammate.
-argument-hint: No argument needed — reads state automatically
+description: "Inspect standing orders, the topic queue, learning files, connector state, and gaps, then recommend the next newsletter action."
+argument-hint: "No arguments"
 ---
 
-# /run
+# /email-marketing-manager:run
 
 Inspect current context and decide the next best action for the newsletter workflow.
 
 ## Purpose
 
-`/run` is the operator command.
+`/email-marketing-manager:run` is the operator command.
 
 It makes Email Marketing Manager feel like a teammate instead of a static prompt by checking the current state before doing work.
 
@@ -27,10 +27,10 @@ It makes Email Marketing Manager feel like a teammate instead of a static prompt
 
 ## What it decides
 
-Based on the current state, `/run` should decide whether to:
-- proceed to `/create`
+Based on the current state, `/email-marketing-manager:run` should decide whether to:
+- proceed to `/email-marketing-manager:create`
 - request a missing input
-- prepare for `/track`
+- prepare for `/email-marketing-manager:track`
 - surface a decision the human needs to make
 
 ## Output
@@ -44,6 +44,6 @@ The output should be short and operational:
 
 ## Why it matters
 
-`/run` is what connects the command surface to the learning loop.
+`/email-marketing-manager:run` is what connects the command surface to the learning loop.
 
 It ensures the specialist is acting on the latest memory, standing orders, and workflow state instead of blindly producing another draft.

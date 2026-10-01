@@ -2,18 +2,15 @@
   "mcpServers": {
     "cloudinary": {
       "type": "http",
-      "url": "https://asset-management.mcp.cloudinary.com/mcp",
-      "category": "images"
+      "url": "https://asset-management.mcp.cloudinary.com/mcp"
     },
     "box": {
       "type": "http",
-      "url": "https://mcp.box.com",
-      "category": "docs"
+      "url": "https://mcp.box.com"
     },
     "beehiiv": {
       "type": "http",
-      "url": "https://mcp.beehiiv.com/mcp",
-      "category": "email"
+      "url": "https://mcp.beehiiv.com/mcp"
     }
   }
 }

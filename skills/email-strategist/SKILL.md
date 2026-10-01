@@ -1,6 +1,6 @@
 ---
 name: email-strategist
-description: Newsletter creation methodology. Determines angle, selects images from a Cloudinary closed candidate list, writes client-specific copy with segment variants, and sizes output to real audience data. Used by /create. The strategic layer that prompt templates skip.
+description: Newsletter creation methodology. Determines angle, selects images from a Cloudinary closed candidate list, writes client-specific copy with segment variants, and sizes output to real audience data. Used by /email-marketing-manager:create. The strategic layer that prompt templates skip.
 ---
 
 # Email Strategist — Newsletter Creation Methodology
@@ -26,10 +26,10 @@ Traditional AI email workflow (what prompt playbooks sell):
 
 Email Marketing Manager approach:
 1. Box folder exists with your documents (already done)
-2. `/create Topic: "spring sale"` (one command)
+2. `/email-marketing-manager:create Topic: "spring sale"` (one command)
 3. Newsletter produced — with verified images from Cloudinary, segment variants based on your personas, angle selected based on what hasn't been used recently
-4. `/track` after it sends — real data recorded
-5. Next `/create` uses those learnings automatically
+4. `/email-marketing-manager:track` after it sends — real data recorded
+5. Next `/email-marketing-manager:create` uses those learnings automatically
 
 The difference: no SOP to follow. No prompt to write. No manual upload. No PDF strategy framework from a stranger. No starting from scratch. The skill does the strategic thinking the SOP skips entirely.
 
@@ -241,4 +241,4 @@ Use only when no client-specific data exists. Always state these are benchmarks:
 | Best send time | Tue-Thu 10am | Tue-Wed 9am | Tue-Fri 8-10am |
 | Avg length | 200-400 words | 300-500 words | 400-800 words |
 
-After the first /track run, benchmarks are replaced with real data. Never use benchmarks when real data exists. Never present benchmarks as predictions.
+After the first /email-marketing-manager:track run, benchmarks are replaced with real data. Never use benchmarks when real data exists. Never present benchmarks as predictions.

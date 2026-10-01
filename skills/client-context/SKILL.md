@@ -13,7 +13,7 @@ A prompt playbook says "upload your brand assets." This skill reads them automat
 
 ## When This Activates
 
-Every `/create` and `/track` command starts here. Load context silently — do not narrate the loading process to the user. Show a one-line status header and move to the command's work.
+Every `/email-marketing-manager:create` and `/email-marketing-manager:track` command starts here. Load context silently — do not narrate the loading process to the user. Show a one-line status header and move to the command's work.
 
 Never say "I'm loading your context" or "Let me read your documents." Just read them and show the status header. The user sees the result, not the process.
 
@@ -28,7 +28,7 @@ Read the client's Box folder. Look for these document types in priority order:
 | 3 | Past newsletters | Subject lines used, angles tried, formats that worked, hooks that opened well, typical length, greeting style, sign-off style, image usage patterns | First newsletter will be baseline — no history to reference |
 | 4 | Performance data / reports | Open rates, click rates, best send times, segment-level metrics, seasonal patterns, A/B test results | Use industry benchmarks, state they're benchmarks |
 | 5 | Content strategy / marketing plan | Newsletter goals, brand positioning, competitive context, seasonal priorities, content pillars | Ask for primary goal of newsletter program |
-| 6 | Newsletter learning files | newsletter-log.md, newsletter-learnings.md, newsletter-baselines.md — written by /track | No learning history. First newsletter establishes baseline. |
+| 6 | Newsletter learning files | newsletter-log.md, newsletter-learnings.md, newsletter-baselines.md — written by /email-marketing-manager:track | No learning history. First newsletter establishes baseline. |
 
 ### Box MCP Tools
 
@@ -82,9 +82,9 @@ Documents don't always have clean titles. Use content to identify type:
 | Subject lines, email body text, send dates, greeting/sign-off patterns | Past newsletters |
 | Open rates, click rates, subscriber counts, "performance" | Performance data |
 | Goals, pillars, competitive mentions, calendar, "strategy" | Content strategy |
-| "Newsletter:" entries with dates and metrics, chronological | Newsletter log (from /track) |
-| Categorized learnings about angles, segments, timing | Newsletter learnings (from /track) |
-| Baseline metrics per segment, angle effectiveness matrix | Newsletter baselines (from /track) |
+| "Newsletter:" entries with dates and metrics, chronological | Newsletter log (from /email-marketing-manager:track) |
+| Categorized learnings about angles, segments, timing | Newsletter learnings (from /email-marketing-manager:track) |
+| Baseline metrics per segment, angle effectiveness matrix | Newsletter baselines (from /email-marketing-manager:track) |
 
 ### Ambiguous Documents
 
@@ -93,7 +93,7 @@ If a document serves multiple purposes (e.g., a brand guide that includes audien
 If two documents contain conflicting information:
 - For voice: past newsletters are ground truth. They show how the brand actually sounds, not how it aspires to sound.
 - For segments: the personas doc is ground truth.
-- For performance: newsletter-baselines.md (from /track) is ground truth if it exists.
+- For performance: newsletter-baselines.md (from /email-marketing-manager:track) is ground truth if it exists.
 - For goals: the most recent document wins.
 
 ## Context Assembly
@@ -140,7 +140,7 @@ For each segment:
 
 - **Last 5-10 newsletters** — subject lines, angles, send times, performance
 - **Angle inventory** — what hooks have been used? Categorize by type
-- **Repeat check** — which angles were used in the last 4 newsletters? Off-limits for next /create.
+- **Repeat check** — which angles were used in the last 4 newsletters? Off-limits for next /email-marketing-manager:create.
 - **Best performers** — top 3 newsletters by open rate and by click rate. What did they have in common?
 - **Worst performers** — bottom 3, with hypotheses on why
 - **Seasonal patterns** — do certain months or seasons drive different performance?
@@ -165,12 +165,12 @@ For each segment:
 | 8-15 | High | Reliable predictions. Cross-variable patterns visible. |
 | 16+ | Very High | Full intelligence. Confident recommendations. |
 
-### Learning History (from /track)
+### Learning History (from /email-marketing-manager:track)
 
-- **Cumulative learnings** — every specific fact recorded by past /track runs
+- **Cumulative learnings** — every specific fact recorded by past /email-marketing-manager:track runs
 - **Confidence level** — based on newsletter count
-- **Last updated** — when was the most recent /track run?
-- **Stale data flag** — if last /track was 60+ days ago, note it
+- **Last updated** — when was the most recent /email-marketing-manager:track run?
+- **Stale data flag** — if last /email-marketing-manager:track was 60+ days ago, note it
 - **Learning count** — how many individual learnings recorded?
 - **Learning categories present** — which categories have data?
 
@@ -179,9 +179,9 @@ For each segment:
 | Condition | Action |
 |-----------|--------|
 | Performance data > 90 days old | Note: "Baselines are from [date] — recent results may differ." |
-| Past newsletters > 6 months old with nothing recent | Note: "Newsletter history is stale — first /create establishes new patterns." |
+| Past newsletters > 6 months old with nothing recent | Note: "Newsletter history is stale — first /email-marketing-manager:create establishes new patterns." |
 | Cloudinary library unchanged for 90+ days | Note: "Image library hasn't been updated recently. Consider adding fresh visuals." |
-| Learning files last updated 60+ days ago | Note: "Learning data is aging. Run /track on recent sends to refresh." |
+| Learning files last updated 60+ days ago | Note: "Learning data is aging. Run /email-marketing-manager:track on recent sends to refresh." |
 | Brand guide last modified > 1 year ago | Note: "Brand guide may be outdated. If voice has evolved, consider updating." |
 
 ## Connector Awareness
@@ -190,7 +190,7 @@ For each segment:
 |-----------|-------------|----------------|
 | Box | Read all documents automatically. Write learning files back. Full context. | Ask user to paste brand context and describe audience. Learning loop won't persist between sessions. |
 | Cloudinary | Query image library. Build verified closed candidate list. Image-performance correlation. | No verified images. Newsletter will be text-only. Suggest what images would strengthen output. |
-| Beehiiv | Pull real send metrics for /track. Post drafts for /create. Subscriber counts for segment sizing. | User pastes metrics manually. Copies newsletter to paste into Beehiiv. Still works — just manual. |
+| Beehiiv | Pull real send metrics for /email-marketing-manager:track. Post drafts for /email-marketing-manager:create. Subscriber counts for segment sizing. | User pastes metrics manually. Copies newsletter to paste into Beehiiv. Still works — just manual. |
 
 ### Degradation Behavior
 
@@ -225,8 +225,8 @@ This skill follows the same architecture as Editorial OS's client-context skill.
 | Audience personas | ✅ | |
 | Content strategy | ✅ | |
 | Past newsletters | | ✅ Email Marketing Manager |
-| newsletter-log.md | | ✅ Written by /track |
-| newsletter-learnings.md | | ✅ Written by /track |
-| newsletter-baselines.md | | ✅ Written by /track |
+| newsletter-log.md | | ✅ Written by /email-marketing-manager:track |
+| newsletter-learnings.md | | ✅ Written by /email-marketing-manager:track |
+| newsletter-baselines.md | | ✅ Written by /email-marketing-manager:track |
 
-The newsletter-specific files are written by /track and read by this skill. They live alongside the brand documents in the same Box folder. The user can read and edit them — transparency is a feature.
+The newsletter-specific files are written by /email-marketing-manager:track and read by this skill. They live alongside the brand documents in the same Box folder. The user can read and edit them — transparency is a feature.

@@ -14,17 +14,17 @@
 ## WEEKLY TASKS
 - Task: Track last newsletter
   Day: Monday
-  Skill: /track
+  Skill: /email-marketing-manager:track
   Notes: Compare actual performance vs prediction and update baselines
 
 - Task: Run newsletter workflow
   Day: Tuesday
-  Skill: /run
+  Skill: /email-marketing-manager:run
   Notes: Check topic queue, standing orders, and current context to decide next action
 
 - Task: Draft next newsletter
   Day: Tuesday
-  Skill: /create
+  Skill: /email-marketing-manager:create
   Notes: Draft primary version plus segment variants and save the record
 
 ## SEND PREFERENCES
@@ -34,11 +34,11 @@
 - Tone constraints: 
 
 ## TOPIC QUEUE
-- Topic: 
-- Topic: 
+- Topic:
+- Topic:
 - Topic: 
 
 ## LOG
-- Last /run: 
-- Last /create: 
-- Last /track: 
+- Last /email-marketing-manager:run:
+- Last /email-marketing-manager:create:
+- Last /email-marketing-manager:track:

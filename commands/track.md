@@ -1,9 +1,9 @@
 ---
-description: Log newsletter results and update the learning memory. Pulls metrics from Beehiiv automatically or accepts manual input. Every tracked newsletter makes the next /create smarter — better predictions, better angles, better timing. The learning loop is the product.
-argument-hint: "Newsletter: spring sale" or paste results directly
+description: "Pull or accept newsletter results, compare them with the prediction, and write reusable performance learnings back to Box."
+argument-hint: "Newsletter: spring sale | Results: optional"
 ---
 
-# /track
+# /email-marketing-manager:track
 
 Log results. Learn from them. Next newsletter gets smarter.
 
@@ -29,7 +29,7 @@ If not connected: ask for the numbers. Accept whatever is available — even par
 
 ## Step 2 — Compare to Prediction
 
-Pull the prediction from the newsletter record saved during `/create` (from `newsletter-log.md` in Box).
+Pull the prediction from the newsletter record saved during `/email-marketing-manager:create` (from `newsletter-log.md` in Box).
 
 - If prediction existed: compare actual vs. predicted. Calculate variance.
   - Within 10%: accurate. Note what held.
@@ -103,7 +103,7 @@ Learning: [1-line summary of key finding]
 
 Use Box MCP tools to read existing files, update them, and write back. If files don't exist yet, create them.
 
-If Box not connected: display all learnings formatted for copy-paste. Instruct the user to save them in their Box folder so the next `/create` can read them.
+If Box not connected: display all learnings formatted for copy-paste. Instruct the user to save them in their Box folder so the next `/email-marketing-manager:create` can read them.
 
 ---
 
@@ -171,5 +171,5 @@ Based on what this newsletter taught:
 - [Recommendation 1 — specific angle, segment, timing, or image choice]
 - [Recommendation 2]
 
-Ready? Run /create and these learnings apply automatically.
+Ready? Run /email-marketing-manager:create and these learnings apply automatically.
 ```

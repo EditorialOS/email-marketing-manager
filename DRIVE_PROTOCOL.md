@@ -65,7 +65,7 @@ Then it writes back to Box:
 And it posts to Beehiiv:
 - newsletter drafts (never auto-sent)
 
-That means `/run`, `/create`, and `/track` all improve as the folder gets richer.
+That means `/email-marketing-manager:run`, `/email-marketing-manager:create`, and `/email-marketing-manager:track` all improve as the folder gets richer.
 
 ## Transparency is a feature
 
