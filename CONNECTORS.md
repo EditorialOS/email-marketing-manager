@@ -1,32 +1,48 @@
 # Connectors
 
-Email Marketing Manager is tool-agnostic — it describes workflows in terms of categories rather than specific products. When you see a `~~placeholder` in a command or skill, it refers to a category of tool, not a specific one.
+Email Marketing Manager uses three connectors — one for each job in the newsletter pipeline.
 
-## Connector Categories
+## Connector Stack
 
-| Category | Placeholder | What It Does | Example Tools |
-|----------|------------|--------------|---------------|
-| Documents + Images | `~~docs` | Source of truth for everything — brand guide, audience personas, past newsletters, performance data, and images | Google Drive, Notion, Dropbox |
-| Email | `~~email` | Newsletter platform — subscriber data, send metrics, draft posting, scheduling | Beehiiv, Mailchimp, ConvertKit, Klaviyo |
+| Connector | Job | MCP Server | What It Does |
+|-----------|-----|------------|--------------|
+| **Cloudinary** | Images | `cloudinary` | Image library for newsletter assets. The `/create` command queries Cloudinary for available images and selects from a verified candidate list — no hallucinated filenames, no broken URLs. |
+| **Box** | Client documents | `box` | Source of truth for brand guide, audience personas, past newsletters, performance data, and learning files. One Box folder per client. |
+| **Beehiiv** | Email platform | `beehiiv` | Newsletter ESP — posts drafts, pulls send metrics, provides subscriber data. Closes the loop between `/create` and `/track`. |
 
 ## How Connectors Enhance Commands
 
 | Command | Works standalone? | Enhanced by |
 |---------|:-:|---|
-| `/setup` | — | `~~docs` (required — this is how client context loads) |
-| `/run` | ✅ works with whatever context is available | `~~docs` (reads standing orders, learning files, topic queue) |
-| `/create` | ✅ describe brand and audience | `~~docs` (reads brand guide, personas, past newsletters, images), `~~email` (posts draft to platform) |
-| `/track` | ✅ paste results manually | `~~email` (pulls real send metrics automatically) |
+| `/setup` | — | **Box** (required — this is how client context loads) |
+| `/run` | ✅ works with whatever context is available | **Box** (reads standing orders, learning files, topic queue) |
+| `/create` | ✅ describe brand and audience | **Cloudinary** (verified image selection), **Box** (reads brand guide, personas, past newsletters), **Beehiiv** (posts draft to platform) |
+| `/track` | ✅ paste results manually | **Beehiiv** (pulls real send metrics automatically), **Box** (writes learning files) |
 
-## The Images Pattern
+## The Closed-List Image Pattern
 
-Images for newsletters live in your Google Drive folder — typically in an `images/` subfolder. This replaces the need for a separate asset management tool. When `/create` runs, it reads available images from Drive and selects ones that match the newsletter topic and angle.
+Images come from Cloudinary — not from a document folder, not from a URL you guess at.
 
-No Cloudinary. No separate image platform. Your Drive folder has your brand docs AND your images. One folder, everything the newsletter needs.
+Before the newsletter is drafted, the system queries Cloudinary for available assets matching the newsletter's topic and context. It returns a **closed candidate list**: asset IDs, delivery URLs, dimensions, format, and metadata. The drafting step may only reference images from this list. An ID not in the list does not exist.
+
+This pattern prevents the single most common failure in AI image selection: hallucinating an asset that looks plausible but doesn't exist, producing a broken newsletter.
+
+### Image roles
+
+| Role | Dimensions | Aspect | Use |
+|------|-----------|--------|-----|
+| Hero | 1200 × 600 | 2:1 | Top of newsletter, full width |
+| Section | 1200 × 675 | 16:9 | Section dividers, inline features |
+| Item | 600 × 600 | 1:1 | Product shots, headshots, thumbnails |
+| Divider | — | — | Decorative separator |
+
+### Alt text rule
+
+Every image gets alt text. If nobody has visually confirmed what the image shows, mark it `ALT PENDING`. A plausible guess at alt text is a fabrication — treat it as one.
 
 ## Learning Files
 
-The `/track` command writes three files back to your Drive folder:
+The `/track` command writes three files back to your Box folder:
 
 - `newsletter-log.md` — record of every newsletter sent
 - `newsletter-learnings.md` — cumulative insights from tracked results
@@ -34,12 +50,36 @@ The `/track` command writes three files back to your Drive folder:
 
 These are plain markdown. You can read them, edit them, share them. The system's intelligence is transparent — not hidden in a database.
 
-## The Drive Protocol pattern
+## The Box Protocol
 
-One Google Drive folder per client. Every command reads from it. `/track` writes back to it. That folder becomes the persistent memory for the system. It compounds over time instead of resetting each session.
+One Box folder per client. Every command reads from it. `/track` writes back to it. That folder becomes the persistent memory for the system. It compounds over time instead of resetting each session.
+
+### Folder structure that works best
+
+```
+Your Brand Folder/
+├── brand-guide.md         (or .pdf, .docx — any format)
+├── audience-personas.md
+├── past-newsletters/      ← examples of what you've sent before
+├── performance/           ← open rates, click rates, any data you have
+├── newsletter-log.md      ← written by /track
+├── newsletter-learnings.md
+└── newsletter-baselines.md
+```
+
+Images live in Cloudinary, not in the document folder. One system per job.
 
 ## Configuring Connectors
 
 Edit `.mcp.json` to point at your specific tools. The plugin gracefully degrades when tools are unavailable — it notes what's missing and works with what you provide directly.
 
-The core connector is `~~docs` (Google Drive). This is what makes the system client-aware — your documents, your images, your learning history. Without it, you can still paste context and get newsletters, but you'll repeat yourself every time and the learning loop won't persist.
+### Degradation Behavior
+
+| Level | What's Connected | System Capability |
+|:---:|---|---|
+| Full | Cloudinary + Box + Beehiiv | Complete: verified images, full context, posts drafts, pulls metrics, learning loop persists |
+| Docs + Images | Cloudinary + Box | Strong: verified images, full context, saves records. User pastes metrics for /track, copies draft to ESP. |
+| Docs only | Box | Moderate: full context, no verified images (suggest what images would help), manual metrics, manual draft posting. |
+| Manual | Nothing | Functional: user pastes brand context and past examples. Newsletter quality depends on what's provided. No persistent learning. No verified images. |
+
+Never block a command because connectors are missing. Degrade gracefully. State what's missing and what it costs — then do the best work possible with what's available.

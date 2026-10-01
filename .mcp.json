@@ -1,9 +1,19 @@
 {
   "mcpServers": {
-    "google-drive": {
+    "cloudinary": {
       "type": "http",
-      "url": "https://gdrive.mcp.claude.com/mcp",
+      "url": "https://asset-management.mcp.cloudinary.com/mcp",
+      "category": "images"
+    },
+    "box": {
+      "type": "http",
+      "url": "https://mcp.box.com",
       "category": "docs"
+    },
+    "beehiiv": {
+      "type": "http",
+      "url": "https://mcp.beehiiv.com/mcp",
+      "category": "email"
     }
   }
 }

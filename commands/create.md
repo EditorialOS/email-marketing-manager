@@ -1,5 +1,5 @@
 ---
-description: Draft a complete newsletter from your real documents. Reads your brand guide, audience personas, past newsletters, images, and performance learnings from Google Drive. Produces subject line, body copy, CTA, image selections, segment-specific variants, and a performance prediction. Posts the draft to your email platform.
+description: Draft a complete newsletter from your real documents. Reads your brand guide, audience personas, and past newsletters from Box, selects verified images from Cloudinary, produces subject line, body copy, CTA, image selections, segment-specific variants, and a performance prediction. Posts the draft to Beehiiv.
 argument-hint: "Topic: spring sale" or "Topic: product launch, Segment: past customers"
 ---
 
@@ -16,8 +16,8 @@ Use when you want to draft a newsletter, email update, or any email send. Works 
 - **Topic or description** — what the newsletter is about (required — even one sentence works)
 - **Target segment** — optional. If not specified, creates variants for all configured segments.
 - **Goal** — optional. Default: engagement. Alternatives: clicks, conversions, retention.
-- **Tone override** — optional. Default uses brand voice from Drive documents.
-- **Images** — optional. Default selects from Drive images folder. User can specify "no images" or name specific files.
+- **Tone override** — optional. Default uses brand voice from Box documents.
+- **Images** — optional. Default selects from Cloudinary library. User can specify "no images" or name specific asset IDs.
 
 ---
 
@@ -25,7 +25,7 @@ Use when you want to draft a newsletter, email update, or any email send. Works 
 
 Use client-context skill. Show one-line status header.
 
-If 🟢 Configured: load brand guide, audience personas, past newsletters, performance learnings, and available images from `~~docs`. Show what was found.
+If 🟢 Configured: load brand guide, audience personas, past newsletters, and performance learnings from Box. Query Cloudinary for available images. Show what was found.
 
 If ⚪ No client: ask for brand name, audience description, and one example of a past newsletter. State that output is directional without full context.
 
@@ -33,7 +33,7 @@ If ⚪ No client: ask for brand name, audience description, and one example of a
 
 ## Step 2 — Check Newsletter History
 
-Read past newsletters from Drive and from `newsletter-log.md` if it exists from prior `/track` runs.
+Read past newsletters from Box and from `newsletter-log.md` if it exists from prior `/track` runs.
 
 - What topics have been covered recently? Avoid repeats within the last 4 issues.
 - What angles have been used? Don't reuse the same hook type back-to-back.
@@ -57,15 +57,32 @@ State the selected angle and why it was chosen. If multiple angles are viable, p
 
 ---
 
-## Step 4 — Select Images
+## Step 4 — Select Images (Cloudinary Closed List)
 
-Read the `~~docs` images subfolder for available images.
+Query Cloudinary for available assets matching the newsletter topic. Use `search-assets` with relevant tags, keywords, or folder paths. Build the **closed candidate list**.
 
-- Match images to the newsletter topic and angle
-- Select 1–3 images (one hero, optionally 1–2 supporting)
-- For each selected image: state the filename and where it should appear (header, inline, footer)
+**THE RULE: Every asset ID you cite must appear in the closed candidate list. An ID that is not in the list does not exist.**
 
-If no images folder exists or it's empty: note it and produce the newsletter without images. Suggest what kind of image would strengthen the piece.
+From the candidate list, select images by role:
+
+| Role | What to select | Criteria |
+|------|---------------|----------|
+| Hero (1200×600, 2:1) | One strong image | High visual impact, relevant to angle, not used in last 3 newsletters |
+| Section (1200×675, 16:9) | 0-2 supporting | Adds information text doesn't convey, breaks up long copy |
+| Item (600×600, 1:1) | As needed | Product shots, headshots, thumbnails |
+
+For each selected image, produce the manifest entry:
+
+```
+Asset ID: [cloudinary public_id]
+Placement: [hero / section / item]
+Delivery URL: [CDN URL]
+Native: [width × height]
+Rationale: [why this image for this placement]
+Alt text: [confirmed description or ALT PENDING]
+```
+
+If Cloudinary is not connected or returns no matching assets: produce the newsletter without images. Suggest what kind of image would strengthen the piece. Never construct URLs by hand.
 
 ---
 
@@ -80,7 +97,7 @@ For the primary segment, produce:
   - Clicks: Hook → problem/opportunity → value of clicking → direct CTA
   - Conversions: Hook → problem → solution → proof → CTA with urgency
   - Retention: Personal hook → what's new → insider value → appreciation CTA
-- **Image placement** — where each selected image appears, with alt text
+- **Image placement** — where each selected image appears, with alt text from manifest
 - **CTA** — specific, action-oriented, single focus
 
 Apply voice rules from brand guide: sentence structure, vocabulary, punctuation, greeting/sign-off, length.
@@ -127,21 +144,44 @@ If no history:
 
 ---
 
-## Step 9 — Post Draft and Save Record
+## Step 9 — Editorial Gate
 
-Post to `~~email` if connected as a **draft only**. Never auto-send. Note the draft link if available.
+Score the newsletter across five gates. Each gate scores 1–5.
 
-If not connected: present full newsletter copy formatted for easy paste.
+| Gate | What It Tests | 5 (pass) | 3-4 (soft fail) | 1-2 (hard fail) |
+|------|--------------|----------|-----------------|-----------------|
+| **Voice** | Does it sound like this brand? | Indistinguishable from past newsletters | Recognizable but drifted | Generic or wrong tone |
+| **Angle** | Is the hook earned and specific? | Connects to real pain point, not a repeat | Decent hook but vague connection | Repeat angle or no pain point |
+| **Structure** | Does the architecture match the goal? | Goal-appropriate flow, right length | Flow works but loose | Wrong structure for goal |
+| **Image integrity** | Are all images from the closed list with valid alt text? | All IDs verified, alt text confirmed | IDs verified, some ALT PENDING | Any unverified ID or fabricated alt |
+| **Segment fit** | Do variants feel written for each segment? | Each opening references segment-specific pain | Variants exist but feel like find-replace | Missing variants or generic |
 
-Save newsletter record to `~~docs`:
+### Verdicts
+
+- **APPROVED** — all five gates score 5/5. Ready for Beehiiv.
+- **REVISE** — any gate scores 3 or 4. Fix the failing gates and re-score. Do not post to Beehiiv until all gates clear.
+- **KILL** — any gate scores 1 or 2. The draft has a structural problem. Restart from Step 3 with a different angle or approach.
+
+State each gate's score and a one-line reason. If REVISE: fix the issues and re-run the gate. If KILL: explain what failed and restart.
+
+---
+
+## Step 10 — Post Draft and Save Record
+
+If APPROVED and Beehiiv is connected: post the newsletter as a **draft only** via the Beehiiv API. Never auto-send. Note the draft ID and link if available.
+
+If Beehiiv is not connected: present full newsletter copy formatted for easy paste into Beehiiv.
+
+Save newsletter record to Box:
 - Newsletter topic/title
 - Date created
 - Angle type
 - Segments targeted
 - Subject line
-- Images used
+- Images used (Cloudinary asset IDs)
 - Predicted open rate + confidence
 - Goal
+- Editorial gate scores
 
 ---
 
@@ -161,9 +201,10 @@ TIMING: [Recommended send day/time + reasoning]
 
 ---
 
-IMAGES SELECTED
-Hero: [filename] — [placement + alt text]
-Supporting: [filename] — [placement + alt text] (if applicable)
+IMAGE MANIFEST
+Hero: [asset_id] — [delivery URL] — [alt text]
+Section: [asset_id] — [delivery URL] — [alt text] (if applicable)
+(All images verified against Cloudinary closed list)
 
 ---
 
@@ -194,22 +235,21 @@ What's different this time: [what's new vs. past data]
 
 ---
 
-NEWSLETTER RECORD
-Saved to: [location in ~~docs]
-Draft posted to: [email platform] or "not connected — copy above"
+EDITORIAL GATE
+Voice:          [score]/5 — [reason]
+Angle:          [score]/5 — [reason]
+Structure:      [score]/5 — [reason]
+Image integrity: [score]/5 — [reason]
+Segment fit:    [score]/5 — [reason]
 
-After this newsletter sends, run /track to log results.
-Every tracked newsletter makes the next one smarter.
+VERDICT: [APPROVED / REVISE / KILL]
 
 ---
 
-QUALITY GATES
-✓ Brand voice applied from [source document or direct input]
-✓ All configured segments served with variants
-✓ Subject line under 50 chars, preview text under 65 chars
-✓ Images selected from Drive or flagged as unavailable
-✓ CTA is single-focus and action-oriented
-✓ Angle checked against history — not a repeat
-✓ Substitution test passed
-✓ Performance prediction stated with honest confidence level
+NEWSLETTER RECORD
+Saved to: [Box folder path]
+Draft posted to: Beehiiv (draft ID: [id]) or "not connected — copy above"
+
+After this newsletter sends, run /track to log results.
+Every tracked newsletter makes the next one smarter.
 ```

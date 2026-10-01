@@ -1,5 +1,5 @@
 ---
-description: Log newsletter results and update the learning memory. Every tracked newsletter makes the next /create smarter — better predictions, better angles, better timing. The learning loop is the product.
+description: Log newsletter results and update the learning memory. Pulls metrics from Beehiiv automatically or accepts manual input. Every tracked newsletter makes the next /create smarter — better predictions, better angles, better timing. The learning loop is the product.
 argument-hint: "Newsletter: spring sale" or paste results directly
 ---
 
@@ -9,19 +9,19 @@ Log results. Learn from them. Next newsletter gets smarter.
 
 ## Trigger
 
-Use after a newsletter has sent and results are available (typically 48+ hours after send). Works with newsletter name, pasted metrics, or automatic pull from `~~email`.
+Use after a newsletter has sent and results are available (typically 48+ hours after send). Works with newsletter name, pasted metrics, or automatic pull from Beehiiv.
 
 ## Inputs
 
 - **Newsletter name or topic** — which newsletter to track (required)
-- **Results** — optional if `~~email` is connected (pulls automatically). Otherwise: open rate, click rate, and any other metrics available.
+- **Results** — optional if Beehiiv is connected (pulls automatically). Otherwise: open rate, click rate, and any other metrics available.
 - **Notes** — optional. Anything observed: "subject line A won the A/B test", "got 3 direct replies", "unsubscribe spike from the leads segment"
 
 ---
 
 ## Step 1 — Gather Results
 
-If `~~email` connected: pull actual send metrics — open rate, click rate, unsubscribe rate, reply count, send count, segment breakdown if available.
+If Beehiiv connected: pull actual send metrics — open rate, click rate, unsubscribe rate, reply count, send count, segment breakdown if available. Use the Beehiiv API to find the post by title or ID and read its analytics.
 
 If not connected: ask for the numbers. Accept whatever is available — even partial data is useful. Don't block on missing metrics.
 
@@ -29,7 +29,7 @@ If not connected: ask for the numbers. Accept whatever is available — even par
 
 ## Step 2 — Compare to Prediction
 
-Pull the prediction from the newsletter record saved during `/create`.
+Pull the prediction from the newsletter record saved during `/create` (from `newsletter-log.md` in Box).
 
 - If prediction existed: compare actual vs. predicted. Calculate variance.
   - Within 10%: accurate. Note what held.
@@ -47,7 +47,7 @@ Break down by:
 - **Angle effectiveness** — how did the core hook perform vs. past hooks?
 - **Segment differences** — which segments engaged more or less?
 - **Timing** — did the send time/day perform as expected?
-- **Image impact** — if images were used, did they correlate with higher engagement?
+- **Image impact** — if Cloudinary images were used, did they correlate with higher engagement? Note asset IDs for future reference.
 - **CTA performance** — click rate tells you if the ask landed
 
 Be specific. Not "the newsletter did well" but "the contrarian angle drove 23% above baseline in the subscribers segment, likely because of the seasonal urgency in the opening."
@@ -64,14 +64,14 @@ Generate 3–5 specific, reusable learnings. Each must include: the specific var
 **Good:** "Wednesday 10am send = highest open rate across 3 newsletters"
 **Bad:** "Midweek sends are good"
 
-**Good:** "Leads segment unsubscribes 2× when newsletter exceeds 400 words"
-**Bad:** "Keep newsletters shorter for some segments"
+**Good:** "Product hero image (asset: product-spring-2026) = +15% click rate vs. text-only"
+**Bad:** "Images help"
 
 ---
 
-## Step 5 — Save Learnings to Drive
+## Step 5 — Save Learnings to Box
 
-Write learnings to `~~docs` folder. Three files, all plain markdown:
+Write learnings to the client's Box folder. Three files, all plain markdown:
 
 **newsletter-log.md** — append this newsletter's record:
 ```
@@ -79,9 +79,10 @@ Write learnings to `~~docs` folder. Three files, all plain markdown:
 Angle: [type]
 Subject: [text]
 Segments: [list]
-Images: [filenames used or "none"]
+Images: [Cloudinary asset IDs used or "none"]
 Open rate: [X%] (predicted: [Y%])
 Click rate: [X%] (predicted: [Y%])
+Editorial gate scores: [V/A/S/I/S]
 Learning: [1-line summary of key finding]
 ```
 
@@ -90,7 +91,7 @@ Learning: [1-line summary of key finding]
 - Segment insights
 - Timing patterns
 - Subject line patterns
-- Image impact
+- Image impact (with Cloudinary asset IDs for reference)
 - CTA patterns
 
 **newsletter-baselines.md** — update current baselines:
@@ -100,7 +101,9 @@ Learning: [1-line summary of key finding]
 - Best send windows
 - Newsletter count (affects confidence level for next prediction)
 
-If `~~docs` not connected: display all learnings formatted for copy-paste. Instruct the user to save them in their Drive folder so the next `/create` can read them.
+Use Box MCP tools to read existing files, update them, and write back. If files don't exist yet, create them.
+
+If Box not connected: display all learnings formatted for copy-paste. Instruct the user to save them in their Box folder so the next `/create` can read them.
 
 ---
 
@@ -140,7 +143,7 @@ WHAT DIDN'T
 
 IMAGE IMPACT
 
-[Comparison of image vs. no-image newsletters if data exists]
+[Which Cloudinary assets appeared and their correlation with engagement]
 
 ---
 
@@ -150,7 +153,7 @@ LEARNINGS RECORDED
 → "[Learning 2]"
 → "[Learning 3]"
 
-Saved to: [location in ~~docs]
+Saved to: [Box folder path]
 
 ---
 
@@ -169,15 +172,4 @@ Based on what this newsletter taught:
 - [Recommendation 2]
 
 Ready? Run /create and these learnings apply automatically.
-
----
-
-QUALITY GATES
-✓ Results compared to prediction with variance calculated
-✓ Learnings are specific (metric + segment + comparison)
-✓ Segment-level breakdown included
-✓ Image impact assessed
-✓ Performance memory updated in Drive
-✓ Newsletter count incremented ([N] total tracked)
-✓ Next /create will reference these learnings
 ```

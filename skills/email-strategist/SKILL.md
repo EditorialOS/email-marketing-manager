@@ -1,6 +1,6 @@
 ---
 name: email-strategist
-description: Newsletter creation methodology. Determines angle, selects images from Drive, writes client-specific copy with segment variants, and sizes output to real audience data. Used by /create. The strategic layer that prompt templates skip.
+description: Newsletter creation methodology. Determines angle, selects images from a Cloudinary closed candidate list, writes client-specific copy with segment variants, and sizes output to real audience data. Used by /create. The strategic layer that prompt templates skip.
 ---
 
 # Email Strategist — Newsletter Creation Methodology
@@ -25,9 +25,9 @@ Traditional AI email workflow (what prompt playbooks sell):
 7. Repeat from scratch next time — nothing learned
 
 Email Marketing Manager approach:
-1. Drive folder exists with your documents (already done)
+1. Box folder exists with your documents (already done)
 2. `/create Topic: "spring sale"` (one command)
-3. Newsletter produced — with images from your folder, segment variants based on your personas, angle selected based on what hasn't been used recently
+3. Newsletter produced — with verified images from Cloudinary, segment variants based on your personas, angle selected based on what hasn't been used recently
 4. `/track` after it sends — real data recorded
 5. Next `/create` uses those learnings automatically
 
@@ -66,47 +66,73 @@ Every angle must pass three checks:
 
 **When data conflicts with instinct:** Trust the data. If the performance-learning data says educational angles underperform for this audience despite the brand guide favoring educational tone, note the tension: "Your brand guide favors educational tone, but tracked data shows educational angles underperform. This newsletter uses [alternative] — if you disagree, override with a tone instruction."
 
-## Image Selection from Drive
+## Image Selection — Cloudinary Closed List
+
+### The Rule
+
+Every asset ID you cite in the newsletter **must appear in the closed candidate list** assembled before drafting. An ID that is not in the list does not exist. A URL you construct yourself does not exist. A filename you remember from a past session does not exist unless it is in the current list.
+
+This is the single most important rule in image selection. It prevents broken images in sent newsletters.
 
 ### How It Works
 
-Images live in the client's Drive folder, typically in an images/ subfolder. The client-context skill inventories available images at load time. This skill selects images that match the newsletter.
+Before writing begins, the system queries Cloudinary for available assets. The query uses the newsletter's topic, client context, and any tags or folder structure the client has set up. The result is a **closed candidate list** — a block of verified assets with:
 
-### Selection Logic
+- **Asset ID** — the Cloudinary public ID (the only valid reference)
+- **Delivery URL** — the CDN URL that actually resolves
+- **Native dimensions** — width × height as stored
+- **Format** — jpg, png, webp, etc.
+- **Metadata** — tags, description, folder, created date
 
-1. **Topic match** — select images related to the newsletter topic. Product newsletter → product shots. People-focused newsletter → headshots or team photos. Seasonal newsletter → seasonal imagery.
+### Selection Criteria
 
-2. **Placement pattern** — match the brand's past newsletter image usage:
-   - If past newsletters use hero images: select one strong hero
-   - If past newsletters use inline images: select 1-2 supporting images
-   - If past newsletters are text-only: don't force images. Note availability for future use.
+For each image placement in the newsletter, select from the candidate list based on:
 
-3. **Hero image criteria:**
-   - High visual impact
-   - Relevant to the angle (not just the topic)
-   - Hasn't been used in the last 3 newsletters
-   - Works at email width (landscape or square preferred for hero)
+1. **Subject fit** — does the image relate to this newsletter's topic and angle?
+2. **Orientation** — hero images need landscape or 2:1; item images need square or near-square
+3. **Palette** — does the image's color palette work with the brand's visual identity?
+4. **Email suitability** — will it render well at email width? Avoid images that depend on fine detail at small size.
+5. **Recency** — has this image been used in the last 3 newsletters? Avoid repeats.
 
-4. **Supporting image criteria:**
-   - Adds information the text doesn't convey
-   - Breaks up long text blocks (for newsletters > 400 words)
-   - Consistent style with the brand (don't mix illustration and photography)
+### Image Roles
+
+| Role | Target dimensions | Aspect | Selection priority |
+|------|------------------|--------|-------------------|
+| Hero | 1200 × 600 | 2:1 | High visual impact, relevant to angle (not just topic), not used recently |
+| Section | 1200 × 675 | 16:9 | Adds information text doesn't convey, breaks up long copy |
+| Item | 600 × 600 | 1:1 | Product shots, headshots, thumbnails |
+| Divider | — | — | Decorative only — use sparingly |
+
+### Alt Text
+
+Every selected image gets alt text. The rule:
+
+- If the image's Cloudinary metadata includes a confirmed description: use it
+- If nobody has visually confirmed what the image shows: mark as `ALT PENDING`
+- A plausible guess at alt text is a fabrication — treat it as one
+
+### Image Manifest Format
+
+For each selected image, produce:
+
+```
+Asset ID: [cloudinary public_id]
+Placement: [hero / section / item / divider]
+Delivery URL: [cloudinary CDN URL with transformations]
+Native: [width × height]
+Rationale: [why this image for this placement]
+Alt text: [confirmed description or ALT PENDING]
+Rights: [from metadata or UNVERIFIED]
+Credit: [from metadata or none]
+Flags: [any concerns — low resolution, portrait for hero slot, etc.]
+```
 
 ### When Images Aren't Available
 
-If the images/ folder is empty or doesn't exist:
+If Cloudinary returns no matching assets or the connector isn't configured:
 - Produce the newsletter without images
-- At the end, suggest: "No images found in your Drive folder. Adding a few product shots or lifestyle images to [folder]/images/ would strengthen future newsletters."
-- Never generate placeholder images or suggest stock photo sites
-
-### Image Output Format
-
-For each selected image:
-```
-Image: [filename]
-Placement: [hero / inline after paragraph N / footer]
-Alt text: [descriptive alt text for accessibility]
-```
+- At the end, suggest what kind of image would strengthen the piece
+- Never generate placeholder images, suggest stock photo sites, or construct Cloudinary URLs by hand
 
 ## Writing the Newsletter
 
@@ -196,12 +222,12 @@ Date: [created date]
 Angle: [type] — [specific hook]
 Segments targeted: [list]
 Subject line (primary): [text]
-Images used: [filenames or "none"]
+Images used: [asset IDs or "none"]
 Predicted open rate: [X%] ([confidence])
 Goal: [engagement/clicks/conversions/retention]
 ```
 
-This record accumulates in the Drive folder. By newsletter 5, the system has meaningful history. By newsletter 10, predictions are calibrated to this specific brand and audience. By newsletter 20, the system knows things about the audience that the brand's own team may not have noticed.
+This record accumulates in the Box folder. By newsletter 5, the system has meaningful history. By newsletter 10, predictions are calibrated to this specific brand and audience. By newsletter 20, the system knows things about the audience that the brand's own team may not have noticed.
 
 ## Performance Benchmarks (Defaults)
 

@@ -1,4 +1,5 @@
 {
   "name": "email-marketing-manager",
-  "description": "A role-locked newsletter operator for Claude CoWork. Reads shared client context from Google Drive, drafts newsletters and segment variants, predicts performance, tracks outcomes, and writes learning files back so the next issue is smarter than the last. Built from 20 years of editorial operations at WIRED, Amazon, Sunset, and the Los Angeles Times."
+  "version": "2.0.0",
+  "description": "A role-locked newsletter operator for Claude Cowork. Reads client context from Box, selects verified images from Cloudinary, drafts newsletters with segment variants, scores output through a 5-gate editorial review, posts drafts to Beehiiv, tracks outcomes, and writes learning files back so the next issue is smarter than the last. Built from 20 years of editorial operations at WIRED, Amazon, Sunset, and the Los Angeles Times."
 }

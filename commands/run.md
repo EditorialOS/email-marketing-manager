@@ -15,12 +15,14 @@ It makes Email Marketing Manager feel like a teammate instead of a static prompt
 
 ## What it reads
 
-- standing orders
+- standing orders (from Box folder)
 - topic queue
-- brand and audience context
+- brand and audience context (from Box)
+- Cloudinary image library status
 - prior newsletter records
 - newsletter learnings
 - newsletter baselines
+- Beehiiv connection status
 - any missing inputs that would block a strong draft
 
 ## What it decides

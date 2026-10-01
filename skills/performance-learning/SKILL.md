@@ -1,6 +1,6 @@
 ---
 name: performance-learning
-description: Tracks newsletter results, extracts specific learnings, and feeds them back into future newsletters. Every /track makes the next /create smarter. This is the learning loop — the feature that separates this system from prompt templates and SOPs. Same skill powers both the Cowork plugin and the autonomous Teammate Protocol.
+description: Tracks newsletter results, extracts specific learnings, and feeds them back into future newsletters. Every /track makes the next /create smarter. This is the learning loop — the feature that separates this system from prompt templates and SOPs. Pulls metrics from Beehiiv, writes learning files to Box, and tracks Cloudinary image performance.
 ---
 
 # Performance Learning — The Feedback Loop
@@ -150,7 +150,7 @@ Search newsletter history for closest matches on:
 - **Recency** — if angle type hasn't been used in 60+ days, note the gap
 - **Fatigue** — if angle type used in 3 of last 5 newsletters, apply -5-10% fatigue discount. Note: "This angle has been used frequently. Consider switching for freshness."
 - **Seasonality** — if seasonal data exists, apply modifier
-- **Image effect** — if this newsletter includes images and past data shows image newsletters outperform, factor that in. If no image and past data shows image newsletters do better, note: "Adding an image from your Drive folder could improve click-through based on past data."
+- **Image effect** — if this newsletter includes Cloudinary images and past data shows image newsletters outperform, factor that in. If no image and past data shows image newsletters do better, note: "Adding an image from your Cloudinary library could improve click-through based on past data."
 - **List growth/shrink** — if subscriber count has changed significantly, note potential impact on rates
 
 ### Step 4 — State Prediction Honestly
@@ -177,13 +177,13 @@ When a newsletter underperforms (>10% below prediction or baseline):
 
 ## Memory Architecture
 
-Performance data lives in the ~~docs folder as plain markdown. Same Drive folder, same documents, fully transparent.
+Performance data lives in the client's Box folder as plain markdown. Same folder as the brand docs, fully transparent.
 
 ### Files Written by /track
 
-**newsletter-log.md** — chronological record of every newsletter created and tracked. One entry per newsletter with date, angle, subject, segments, images, metrics, and one-line learning summary.
+**newsletter-log.md** — chronological record of every newsletter created and tracked. One entry per newsletter with date, angle, subject, segments, Cloudinary asset IDs, metrics, editorial gate scores, and one-line learning summary.
 
-**newsletter-learnings.md** — cumulative learnings organized by category: angle effectiveness, segment insights, timing patterns, subject line patterns, image impact, CTA patterns. Updated with each /track run. New learnings append; they never overwrite.
+**newsletter-learnings.md** — cumulative learnings organized by category: angle effectiveness, segment insights, timing patterns, subject line patterns, image impact (with Cloudinary asset IDs), CTA patterns. Updated with each /track run. New learnings append; they never overwrite.
 
 **newsletter-baselines.md** — current state: overall averages, per-segment baselines, angle effectiveness matrix, best send windows, newsletter count, confidence level, last updated date.
 
@@ -192,7 +192,7 @@ Performance data lives in the ~~docs folder as plain markdown. Same Drive folder
 - The user can open these files and read exactly what the system knows
 - The user can edit them — correct a learning, add context, remove an outlier
 - No database, no schema, no hidden state
-- Same format works in a Cowork plugin (reads from Drive) and a Teammate Protocol deployment (reads from workspace/)
+- Same format works in a Cowork plugin (reads from Box) and other deployment modes
 - Human-readable AND machine-readable
 
 ### File Lifecycle
@@ -209,33 +209,9 @@ Performance data lives in the ~~docs folder as plain markdown. Same Drive folder
 
 This skill is designed to work in two modes:
 
-**Plugin mode (Cowork):** User manually runs `/create` and `/track`. Skill reads from and writes to ~~docs (Google Drive).
+**Plugin mode (Cowork):** User manually runs `/create` and `/track`. Skill reads from and writes to Box. Images from Cloudinary. Metrics from Beehiiv.
 
-**Teammate mode (OpenClaw VPS):** Cron job fires `runtime.py`. Skill reads from and writes to `workspace/` (synced from Google Drive). Standing orders determine when to draft and when to review performance.
-
-Same skill file. Same methodology. Same learning files. Different trigger mechanism. The intelligence is in the skill, not in the trigger.
-
-```
-Teammate standing_orders.md:
-
-RECURRING TASKS
-
-Weekly
-- Task: Draft weekly newsletter
-  Day: Tuesday
-  Skill: email-strategist
-
-- Task: Review last newsletter's performance
-  Day: Monday
-  Skill: performance-learning
-
-Monthly
-- Task: Refresh segment baselines
-  Day: First Monday
-  Skill: performance-learning
-```
-
-The plugin is the manual version. The teammate is the autonomous version. Both produce the same quality because they run the same skills.
+Same skill file. Same methodology. Same learning files. Different connector, same output quality.
 
 ## The Compounding Advantage
 
